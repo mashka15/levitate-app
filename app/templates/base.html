@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Витамины и БАДы</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .nav-container {
+  display: flex;
+  justify-content: space-between; /* Логотип слева, правый блок справа */
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+}
+
+.right-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Меню */
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+  }
+}
+
+    </style>
+</head>
+<script>
+(function(){
+  const slider = document.querySelector('#hero');
+  if(!slider) return;
+
+  const track = slider.querySelector('.hero-track');
+  const slides = Array.from(slider.querySelectorAll('.hero-slide'));
+  const prevBtn = slider.querySelector('.hero-arrow.prev');
+  const nextBtn = slider.querySelector('.hero-arrow.next');
+  const dotsWrap = slider.querySelector('.hero-dots');
+
+  let index = 0;
+  let locked = false;
+  const AUTOPLAY_MS = Number(slider.dataset.autoplay || 6000);
+
+  // Создаём точки
+  slides.forEach((_, i)=>{
+    const b = document.createElement('button');
+    b.className = 'hero-dot';
+    b.type = 'button';
+    b.setAttribute('aria-label', `Слайд ${i+1}`);
+    b.addEventListener('click', ()=>goTo(i));
+    dotsWrap.appendChild(b);
+  });
+
+  function update(){
+    track.style.transform = `translateX(-${index*100}%)`;
+    dotsWrap.querySelectorAll('.hero-dot').forEach((d,i)=>{
+      d.setAttribute('aria-selected', String(i===index));
+    });
+  }
+
+  function goTo(i){
+    if(locked) return;
+    index = (i + slides.length) % slides.length;
+    locked = true;
+    update();
+    setTimeout(()=> locked=false, 620); // блокируем спам кликов на время анимации
+    restartAutoplay();
+  }
+
+  function next(){ goTo(index+1); }
+  function prev(){ goTo(index-1); }
+
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+
+  // Автоплей с паузой на ховер/невидимость
+  let timer = null;
+  function startAutoplay(){ if(AUTOPLAY_MS>0) timer = setInterval(next, AUTOPLAY_MS); }
+  function stopAutoplay(){ clearInterval(timer); timer=null; }
+  function restartAutoplay(){ stopAutoplay(); startAutoplay(); }
+
+  slider.addEventListener('mouseenter', stopAutoplay);
+  slider.addEventListener('mouseleave', startAutoplay);
+  document.addEventListener('visibilitychange', ()=> document.hidden ? stopAutoplay() : startAutoplay());
+
+  // Свайп (тач/мышь)
+  let startX = 0, deltaX = 0, isPointer = false;
+  const THRESHOLD = 40;
+
+  function onDown(e){
+    isPointer = true;
+    startX = (e.touches ? e.touches[0].clientX : e.clientX);
+    deltaX = 0;
+  }
+  function onMove(e){
+    if(!isPointer) return;
+    const x = (e.touches ? e.touches[0].clientX : e.clientX);
+    deltaX = x - startX;
+  }
+  function onUp(){
+    if(!isPointer) return;
+    if(Math.abs(deltaX) > THRESHOLD){
+      deltaX < 0 ? next() : prev();
+    }
+    isPointer = false; deltaX = 0;
+  }
+
+  slider.addEventListener('mousedown', onDown);
+  slider.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onUp);
+
+  slider.addEventListener('touchstart', onDown, {passive:true});
+  slider.addEventListener('touchmove', onMove, {passive:true});
+  slider.addEventListener('touchend', onUp);
+
+  // Инициализация
+  update();
+  startAutoplay();
+})();
+</script>
+
+<body>
+
+    <!-- Шапка сайта -->
+    <header class="site-header">
+  <div class="nav-container">
+    <!-- Логотип слева -->
+    <a class="brand" href="{{ url_for('main.home') }}">
+      <img src="{{ url_for('static', filename='images/ChatGPT Image 24 сент. 2025 г., 19_50_24.png') }}"
+           alt="Орел" class="eagle-icon">
+      <span class="brand-name">LEVITATE</span>
+    </a>
+
+    <!-- Правый блок с меню, корзиной, соцсетями и бургером -->
+    <div class="right-block">
+      <!-- Меню -->
+      <ul class="nav-links" id="primary-nav">
+        <li><a href="{{ url_for('main.home') }}">Главная</a></li>
+        <li><a href="{{ url_for('main.products') }}">Наши продукты</a></li>
+        <li><a href="{{ url_for('main.cooperation') }}">Сотрудничество</a></li>
+      </ul>
+
+      <!-- Корзина -->
+      <div class="cart-icon">
+        <a href="{{ url_for('main.cart') }}" aria-label="Корзина">
+          <i class="fas fa-cart-plus"></i>
+          <span class="cart-count" data-count="{{ total_items }}">0</span>
+        </a>
+      </div>
+
+      <!-- Соцсети -->
+      <div class="social-icons" aria-label="Социальные сети">
+        <a href="https://www.instagram.com/levitate_pharm/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://t.me/Levitate_pharm_bot" target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://vk.com" target="_blank" aria-label="VK"><i class="fab fa-vk"></i></a>
+      </div>
+
+      <!-- Бургер для мобилок -->
+      <button class="burger" aria-controls="primary-nav" aria-expanded="false" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+    <!-- Основной контент страницы -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        <p>&copy;ИП Филиппова Анастасия Владимировна
+ИНН 246315136078.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+  const burger = document.querySelector('.burger');
+  const navLinks = document.querySelector('.nav-links');
+
+  burger.addEventListener('click', function () {
+    navLinks.classList.toggle('open'); // Добавляем/удаляем класс .open
+  });
+});
+
+
+</script>
+
+</body>
+
+
+</html>
+

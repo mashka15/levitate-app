@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+
+<style>
+
+/* Стили для текстуры товара */
+.product-image-container {
+    position: relative;
+}
+span.close{
+    display: none;
+}
+
+.product-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* Скрыта по умолчанию */
+    opacity: 0.7;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Стиль для модального окна */
+.modal {
+    display: none;  /* Скрыто по умолчанию */
+    position: absolute;
+    z-index: 1;
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 20px;
+    background-color: rgba(0, 0, 0, 0.5);  /* Черный фон с прозрачностью */
+    padding: 20px;
+    border-radius: 8px;
+    animation: fadeIn 0.5s ease-in-out;
+    margin-top: 20px;
+    transition: top 0.5s ease;
+}
+
+/* Контент модального окна */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Стиль для стрелочки-сворачивания */
+.close-arrow {
+    display: none;
+    margin-top: 20px;
+    font-size: 30px;
+    color: #333;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.close-arrow:hover {
+    transform: rotate(180deg); /* Эффект вращения при наведении */
+}
+
+.close:hover,
+.close:focus {
+    color: #0056b3; /* Более темный синий при наведении */
+}
+
+/* Стили для текста и списка в модальном окне */
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    font-size: 16px;
+    color: #555;
+}
+
+.modal-text {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.modal-list {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.modal-list ul {
+    padding-left: 15px;
+}
+
+.modal-list li {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Стили для текстуры */
+.product-texture-container {
+    margin-top: 20px;
+}
+
+.product-texture {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.product-image-container {
+    position: relative;
+    width: 100%;
+    height: 200px; /* Устанавливаем нужный размер для изображения */
+    overflow: hidden;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Убедимся, что изображение заполняет контейнер */
+    transition: opacity 0.3s ease;
+}
+
+.front-image {
+    opacity: 1; /* Основное изображение всегда видно */
+}
+
+.back-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0; /* Скрыто по умолчанию */
+    transition: opacity 0.3s ease;
+}
+
+/* При наведении на изображение показываем текстуру */
+.product-image-container:hover .front-image {
+    opacity: 0; /* Скрываем основное изображение при наведении */
+}
+
+.product-image-container:hover .back-image {
+    opacity: 1; /* Показываем текстуру при наведении */
+}
+
+
+</style>
+
+
+{% block content %}
+<div class="products-section">
+    <h1 class="section-title">Каталог продукции Levitate</h1>
+    <p class="section-subtitle">Продукция для здоровья и благополучия</p>
+<div class="products-container">
+    {% for product in products %}
+    <div class="product-card">
+        <div class="product-image-container">
+            <!-- Основное изображение товара -->
+            <img src="{{ url_for('static', filename=product.image_url) }}"
+                 alt="{{ product.name }}" class="product-image front-image">
+
+            <!-- Изображение текстуры, которое будет показываться при наведении -->
+            {% if product.texture_url %}
+                <img src="{{ url_for('static', filename=product.texture_url) }}"
+                     alt="Textura" class="product-image back-image">
+            {% endif %}
+        </div>
+        <div class="product-info">
+            <h2 class="product-title">{{ product.name }}</h2>
+            <p class="product-description">{{ product.description }}</p>
+            <p class="product-price">{{ product.price }} руб.</p>
+
+            <!-- Кнопка для перехода на страницу товара -->
+            <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="btn-ghost">Подробнее</a>
+
+
+            <!-- Форма для добавления товара в корзину -->
+           <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="post" class="add-to-cart-form">
+    <div class="quantity-selector">
+        <button type="button" class="quantity-btn decrease-btn">-</button>
+        <input type="number" name="quantity" class="quantity-input" value="1" min="1">
+        <button type="button" class="quantity-btn increase-btn">+</button>
+    </div>
+    <button type="submit" class="order-button">Добавить в корзину</button>
+</form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+<script>
+    // Преобразуем список продуктов в JSON
+    const products = {{ products | tojson | safe }};
+
+    function openModal(productId) {
+    const product = products.find(p => p.id === productId);
+
+    if (product) {
+        // Заполняем модальное окно данными
+        document.getElementById("modalProductName" + productId).textContent = product.name;
+        document.getElementById("modalProductDescription" + productId).textContent = product.description || "Нет описания";
+
+        // Состав и сертификаты
+        const compositionElement = document.getElementById("modalProductComposition" + productId);
+        compositionElement.innerHTML = product.composition ? `<ul><li>${product.composition.replace(/\n/g, "</li><li>")}</li></ul>` : "Нет информации о составе";
+
+        const certificatesElement = document.getElementById("modalProductCertificates" + productId);
+        certificatesElement.innerHTML = product.certificates ? `<ul><li>${product.certificates.replace(/\n/g, "</li><li>")}</li></ul>` : "Нет информации о сертификатах";
+
+        // Если есть текстурное изображение, показываем его
+        if (product.texture_url) {
+            document.getElementById("modalTextureImage" + productId).src = "{{ url_for('static', filename='') }}" + product.texture_url;
+            document.getElementById("modalProductTexture" + productId).style.display = 'block';
+        } else {
+            document.getElementById("modalProductTexture" + productId).style.display = 'none';
+        }
+
+        // Показываем модальное окно
+        document.getElementById("productModal" + productId).style.display = "block";
+
+        // Показываем стрелочку только при открытии модального окна
+        document.querySelector(`#productModal${productId} .close-arrow`).style.display = "block";
+    } else {
+        console.log("Продукт не найден");
+    }
+}
+
+function closeModal(productId) {
+    document.getElementById("productModal" + productId).style.display = "none";
+    // Скрываем стрелочку при закрытии модального окна
+    document.querySelector(`#productModal${productId} .close-arrow`).style.display = "none";
+}
+// Функции для показа/скрытия текстуры
+    function showTexture(productId) {
+        const texture = document.getElementById("texture" + productId);
+        if (texture) {
+            texture.style.display = "block"; // Показываем текстуру
+        }
+    }
+
+    function hideTexture(productId) {
+        const texture = document.getElementById("texture" + productId);
+        if (texture) {
+            texture.style.display = "none"; // Скрываем текстуру
+        }
+    }
+</script>
+<script>
+    // Функция для обновления счетчика корзины в хедере
+    function updateCartCount(count) {
+        const cartCountElement = document.querySelector('.cart-count');
+        if (cartCountElement) {
+            // Явно преобразуем count в число, если это возможно
+            let numericCount = Number(count);
+            if (isNaN(numericCount) || numericCount < 0) {
+                numericCount = 0;
+            }
+            cartCountElement.textContent = numericCount;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartCountElement = document.querySelector('.cart-count');
+
+        let count = 0;
+        if (cartCountElement && cartCountElement.dataset.count !== undefined) {
+            count = parseInt(cartCountElement.dataset.count);
+        }
+        updateCartCount(count);
+    });
+
+    // Кнопки уменьшения/увеличения количества товара
+    document.querySelectorAll('.decrease-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            if (quantity > 1) {
+                quantityInput.value = quantity - 1;
+            }
+        });
+    });
+
+    document.querySelectorAll('.increase-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            quantityInput.value = quantity + 1;
+        });
+    });
+</script>
+
+<script>
+    const products = {{ products|tojson }};
+    console.log(products); // Теперь это будет массив объектов с данными продуктов
+</script>
+
+{% endblock %}

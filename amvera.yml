@@ -10,5 +10,6 @@ build:
 run:
   scriptName: app.py
   persistenceMount: /data
-  containerPort: 80
+  run:
+    containerPort: 5000
   command: gunicorn --bind 0.0.0.0:5000 wsgi:app

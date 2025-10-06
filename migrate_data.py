@@ -5,7 +5,7 @@ sqlite_engine = create_engine('sqlite:///C:/Users/karpo/PycharmProjects/referenc
 sqlite_metadata = MetaData()
 sqlite_metadata.reflect(bind=sqlite_engine)
 
-pg_engine = create_engine('postgresql://postgres:marukarp123@localhost:5432/levitate')
+pg_engine = create_engine('postgresql://mashakarpova1511:marukarp123@localhost:5432/levitate')
 pg_metadata = MetaData()
 pg_metadata.reflect(bind=pg_engine)
 

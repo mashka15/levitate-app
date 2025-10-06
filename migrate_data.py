@@ -17,16 +17,21 @@ pg_session = PGSession()
 
 for table_name in sqlite_metadata.tables.keys():
     sqlite_table = Table(table_name, sqlite_metadata, autoload_with=sqlite_engine)
+
+    if table_name not in pg_metadata.tables:
+        print(f"Таблица {table_name} отсутствует в PostgreSQL, пропускаем")
+        continue
+
     pg_table = Table(table_name, pg_metadata, autoload_with=pg_engine)
 
-    rows = sqlite_session.execute(sqlite_table.select()).fetchall()
+    rows = sqlite_session.execute(sqlite_table.select()).mappings().all()
     print(f"Переносим {len(rows)} строк из таблицы {table_name}")
 
     if rows:
-        pg_session.execute(pg_table.insert(), [dict(row) for row in rows])
-        pg_session.commit()
+        try:
+            pg_session.execute(pg_table.insert(), rows)
+            pg_session.commit()
+        except Exception as e:
+            pg_session.rollback()
+            print(f"Ошибка при переносе таблицы {table_name}: {e}")
 
-sqlite_session.close()
-pg_session.close()
-
-print("Данные успешно перенесены из SQLite в PostgreSQL")

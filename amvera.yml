@@ -7,9 +7,11 @@ meta:
 build:
   requirementsPath: requirements.txt
 run:
-  scriptName: app.py
-  persistenceMount: /data
-  containerPort: 5000
-  servicePort: 80
-  command: sh -c "flask db upgrade && gunicorn --bind 0.0.0.0:5000 app:app"
+  run:
+    scriptName: app.py  # Оставляем без изменений
+    command: sh -c "flask db upgrade && gunicorn --bind 0.0.0.0:5000 app:create_app"
+env:
+  FLASK_APP: app
+  FLASK_ENV: production  # Для продакшн-режима
+
 

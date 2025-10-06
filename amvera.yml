@@ -8,8 +8,8 @@ build:
   requirementsPath: requirements.txt
 run:
   run:
-    scriptName: app.py  # Оставляем без изменений
-    command: sh -c "flask db upgrade && gunicorn --bind 0.0.0.0:5000 app:create_app"
+    scriptName: run.py  # Оставляем без изменений
+    command: sh -c "flask db upgrade && python run.py"
 env:
   FLASK_APP: app
   FLASK_ENV: production  # Для продакшн-режима

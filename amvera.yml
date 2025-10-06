@@ -14,4 +14,3 @@ env:
   FLASK_APP: app
   FLASK_ENV: production  # Для продакшн-режима
 
-

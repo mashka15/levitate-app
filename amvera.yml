@@ -7,9 +7,9 @@ meta:
 build:
   requirementsPath: requirements.txt
 run:
-  run:
-    scriptName: run.py  # Оставляем без изменений
-    command: sh -c "flask db upgrade && python run.py"
+  scriptName: app.py
+  command: sh -c "flask --app app db upgrade && flask run --host=0.0.0.0 --port=5000"
+
 env:
   FLASK_APP: app
   FLASK_ENV: production  # Для продакшн-режима

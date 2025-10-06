@@ -150,6 +150,8 @@ def product_detail(product_id):
 
     # Мапа id товара -> список фото (пути относительно папки static)
     product_images_map = {
+        1: ['images/photo_2025-09-28_12-39-47.jpg','images/photo_2025-09-28_13-36-11.jpg','images/photo_2025-09-28_13-56-14.jpg','images/photo_2025-09-28_13-56-15.jpg'],
+        2: ['images/photo_2025-09-28_11-24-33.jpg','images/photo_2025-09-28_13-53-04.jpg','images/photo_2025-09-28_13-57-10.jpg','images/photo_2025-09-28_13-57-10 (2).jpg'],
         10: ['images/89792760.jpg', 'images/98349287_converted.jpg', 'images/106A5985.jpg'],
         11: ['images/106A5711.jpg', 'images/106A5690.jpg', 'images/106A5483.jpg'],
         12: ['images/106A9122.jpeg', 'images/106A8918.jpg', 'images/106A5853.jpg'],

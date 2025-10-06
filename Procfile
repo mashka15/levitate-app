@@ -1,2 +1,3 @@
-web: flask --app app run
+web: gunicorn app:create_app
+
 

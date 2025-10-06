@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero блок -->
+<div class="cooperation-hero">
+    <div class="hero-overlay">
+        <h1>Сотрудничество</h1>
+        <p>Хотите стать нашим партнером? Заполните форму, и мы свяжемся с вами.</p>
+    </div>
+</div>
+
+<!-- Секция сотрудничества -->
+<div class="cooperation-section">
+    <!-- Форма слева -->
+    <div class="cooperation-form-wrapper">
+        <form action="{{ url_for('main.cooperation') }}" method="post" class="cooperation-form">
+            <h2>Свяжитесь с нами</h2>
+            <input type="text" id="name" name="name" placeholder="Ваше имя" required class="input-field">
+            <input type="email" id="email" name="email" placeholder="Ваш email" required class="input-field">
+            <textarea id="message" name="message" placeholder="Сообщение" required class="input-field"></textarea>
+            <button type="submit" class="submit-button">Отправить</button>
+        </form>
+    </div>
+
+    <!-- Слоганы справа -->
+    <div class="cooperation-info">
+        <h2>Вы — практикующий специалист?</h2>
+        <div class="specialties">
+            <div class="specialty"><span class="icon">💆‍♀️</span>КОСМЕТОЛОГ</div>
+            <div class="specialty"><span class="icon">🩺</span>ДЕРМАТОЛОГ</div>
+            <div class="specialty"><span class="icon">👩‍⚕️</span>ГИНЕКОЛОГ</div>
+            <div class="specialty"><span class="icon">🩹</span>ТЕРАПЕВТ</div>
+        </div>
+        <p class="cooperation-slogan">Станьте дистрибьютором Levitate и зарабатывайте на умном продукте!</p>
+    </div>
+</div>
+
+<div id="flash-messages-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash-message flash-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+
+<style>
+/* Hero */
+.cooperation-hero {
+    position: relative;
+    background-image: url("{{ url_for('static', filename='images/f9cfb477-a990-445c-95b2-1c4db3195c6f.png') }}");
+    background-size: cover;
+    background-position: center;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero-overlay {
+    background-color: rgba(249, 247, 244, 0.8);
+    padding: 40px 25px;
+    border-radius: 16px;
+    max-width: 600px;
+    text-align: center;
+    color: rgb(0, 51, 102, 0.9);
+    animation: fadeIn 1s ease forwards;
+}
+.hero-overlay h1 { font-size: 2.2rem; margin-bottom: 12px; }
+.hero-overlay p { font-size: 1.1rem; }
+
+/* Cooperation Section */
+.cooperation-section {
+    display: flex;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 50px auto 80px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Форма слева — синий стиль */
+.cooperation-form-wrapper { flex: 1 1 320px; max-width: 380px;margin-left: 30px; }
+.cooperation-form {
+    background: linear-gradient(135deg, #003366, #00509e);
+    padding: 30px 45px;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeInUp 1s ease forwards;
+    color: #fff;
+}
+.cooperation-form h2 {
+    margin-bottom: 12px;
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+}
+.input-field {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.6);
+    font-size: 0.95rem;
+    width: 100%;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+.input-field::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+.input-field:focus {
+    border-color: #fff;
+    box-shadow: 0 0 6px rgba(255,255,255,0.4);
+    outline: none;
+}
+.submit-button {
+    background: #fff;
+    color: #003366;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.submit-button:hover {
+    background: rgba(255,255,255,0.9);
+    transform: translateY(-2px);
+}
+
+/* Info block справа */
+.cooperation-info {
+    flex: 1 1 300px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 18px;
+    display: flex;
+    width: 80%;
+    margin-left: 50px;
+}
+.cooperation-info h2 { font-size: 1.5rem; color: #003366; margin-bottom: 10px; }
+.specialties { display: flex; flex-direction: column; gap: 10px; }
+.specialty {
+    background: linear-gradient(135deg, #003366, #00509e);
+    color: #fff;
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.25s ease;
+}
+.specialty:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+.cooperation-slogan {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #003366;
+}
+
+/* Animations */
+@keyframes fadeIn {0% {opacity: 0; transform: translateY(-15px);} 100% {opacity: 1; transform: translateY(0);}}
+@keyframes fadeInUp {0% {opacity: 0; transform: translateY(15px);} 100% {opacity: 1; transform: translateY(0);}}
+
+/* Adaptive */
+@media (max-width: 900px) {
+    .cooperation-section {flex-direction: column; gap: 30px;}
+}
+
+
+.flash-message {
+  background-color: #4BB543; /* зеленый для success */
+  color: white;
+  padding: 15px 25px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+  min-width: 250px;
+}
+
+.flash-error {
+  background-color: #f44336; /* красный для ошибок */
+}
+
+.flash-warning {
+  background-color: #ff9800; /* оранжевый для предупреждений */
+}
+
+.flash-info {
+  background-color: #2196F3; /* синий для информации */
+}
+
+
+</style>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const container = document.getElementById('flash-messages-container');
+    if (container) {
+      setTimeout(() => {
+        const messages = container.querySelectorAll('.flash-message');
+        messages.forEach(msg => {
+          msg.style.opacity = '0';
+          setTimeout(() => {
+            msg.remove();
+          }, 500); // через 0.5 сек после изменения прозрачности удаляем элемент
+        });
+      }, 3000); // через 3 секунды после загрузки страницы
+    }
+  });
+</script>
+
+
+<script>
+    // Функция для обновления счетчика корзины в хедере
+    function updateCartCount(count) {
+        const cartCountElement = document.querySelector('.cart-count');
+        if (cartCountElement) {
+            // Явно преобразуем count в число, если это возможно
+            let numericCount = Number(count);
+            if (isNaN(numericCount) || numericCount < 0) {
+                numericCount = 0;
+            }
+            cartCountElement.textContent = numericCount;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartCountElement = document.querySelector('.cart-count');
+
+        let count = 0;
+        if (cartCountElement && cartCountElement.dataset.count !== undefined) {
+            count = parseInt(cartCountElement.dataset.count);
+        }
+        updateCartCount(count);
+    });
+
+    // Кнопки уменьшения/увеличения количества товара
+    document.querySelectorAll('.decrease-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            if (quantity > 1) {
+                quantityInput.value = quantity - 1;
+            }
+        });
+    });
+
+    document.querySelectorAll('.increase-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            quantityInput.value = quantity + 1;
+        });
+    });
+</script>
+
+
+{% endblock %}

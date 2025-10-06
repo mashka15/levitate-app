@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.product-detail-container {
+  display: flex;
+  gap: 30px;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  flex-wrap: wrap; /* Добавить возможность переноса */
+}
+
+.product-images {
+  flex: 1 1 400px; /* Позволяет сжиматься и расти, минимальная ширина */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main-image-container {
+  position: relative;
+  max-width: 600px;
+  max-height: 560px;
+  display: flex;         /* Добавляем для правильного центровки */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  /* or cover — по желанию */
+  object-position: center center; /* Центрируем */
+  display: block;       /* Убираем лишние пространства у img */
+  max-height: 100%;
+  max-width: 100%;
+}
+
+
+
+
+.thumbnail-images {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap; /* Позволяет миниатюрам переноситься */
+}
+
+.product-info {
+  flex: 1 1 400px; /* Позволяет сжиматься и расти, минимальная ширина */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 15px 10px;
+  margin: 0;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  min-width: 300px;
+}
+
+.product-info h1,
+.product-info h3,
+.product-info p {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.add-to-cart-form {
+  margin-top: auto;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 51, 102, 0.6);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 27px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+  border: none;
+}
+
+.arrow:hover {
+  background-color: rgba(0, 51, 102, 0.9);
+}
+
+.arrow-left {
+  left: 10px;
+}
+
+.arrow-right {
+  right: 10px;
+}
+
+/* Адаптивные стили */
+@media (max-width: 900px) {
+  .product-detail-container {
+    flex-direction: column;
+    margin: 20px auto;
+  }
+  .product-images,
+  .product-info {
+    flex: none;
+    width: 100%;
+    min-width: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .main-image-container {
+    max-height: 350px;
+  }
+  .thumbnail-images {
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
+}
+
+</style>
+
+<div class="product-detail-container">
+    <div class="product-images">
+        <div class="main-image-container">
+            <div class="arrow arrow-left" onclick="prevImage()">&#10094;</div>
+            <img id="mainImage" src="{{ url_for('static', filename=product_images[0]) }}" alt="{{ product.name }}" class="main-image">
+            <div class="arrow arrow-right" onclick="nextImage()">&#10095;</div>
+        </div>
+        <div class="thumbnail-images" id="thumbnails">
+            {% for img in product_images %}
+{% endfor %}
+        </div>
+    </div>
+
+    <div class="product-info">
+        <h1 class="product-title">{{ product.name }}</h1>
+        <p class="product-price">{{ product.price }} руб.</p>
+
+        <h3>Описание</h3>
+        <p class="product-description">{{ product.description }}</p>
+
+        <h3>Состав:</h3>
+        <p>{{ product.composition if product.composition else "Информация не доступна." }}</p>
+
+        <h3>Сертификаты:</h3>
+        <p>{{ product.certificates if product.certificates else "Информация не доступна." }}</p>
+
+        <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="post" class="add-to-cart-form">
+            <div class="quantity-selector">
+                <button type="button" class="quantity-btn decrease-btn">-</button>
+                <input type="number" name="quantity" class="quantity-input" value="1" min="1">
+                <button type="button" class="quantity-btn increase-btn">+</button>
+            </div>
+            <button type="submit" class="order-button">Добавить в корзину</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Массив с изображениями для товара (передается из backend)
+    const images = {{ product_images | tojson }};
+
+    let currentIndex = 0;
+
+    const mainImage = document.getElementById('mainImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+
+    function updateActiveThumbnail() {
+        thumbnails.forEach((thumb, i) => {
+            if (i === currentIndex) {
+                thumb.classList.add('active');
+            } else {
+                thumb.classList.remove('active');
+            }
+        });
+    }
+
+    function setImage(index) {
+        currentIndex = index;
+        mainImage.style.opacity = 0;
+        setTimeout(() => {
+            mainImage.src = "{{ url_for('static', filename='') }}" + images[currentIndex];
+            mainImage.style.opacity = 1;
+            updateActiveThumbnail();
+        }, 200);
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        setImage(currentIndex);
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        setImage(currentIndex);
+    }
+
+    // При загрузке страницы выделяем первый активный thumbnail
+    document.addEventListener('DOMContentLoaded', () => {
+        updateActiveThumbnail();
+
+        // Кнопки количества для формы
+        document.querySelectorAll('.decrease-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const quantityInput = button.closest('.add-to-cart-form').querySelector('.quantity-input');
+                let quantity = parseInt(quantityInput.value) || 1;
+                if (quantity > 1) {
+                    quantityInput.value = quantity - 1;
+                }
+            });
+        });
+
+        document.querySelectorAll('.increase-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const quantityInput = button.closest('.add-to-cart-form').querySelector('.quantity-input');
+                let quantity = parseInt(quantityInput.value) || 1;
+                quantityInput.value = quantity + 1;
+            });
+        });
+    });
+</script>
+
+
+
+<script>
+    // Обновляем счетчик корзины на странице на основе данных с сервера
+    function updateCartCount(count) {
+        const cartCountElement = document.querySelector('.cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = count;
+        }
+    }
+
+    // Получаем количество товаров из data-атрибута на элементе или из скрытого поля, установленных сервером
+    // Например, в вашем layout-шаблоне поставьте:
+    // <span class="cart-count" data-count="{{ total_items }}">{{ total_items }}</span>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartCountElement = document.querySelector('.cart-count');
+        const count = cartCountElement ? parseInt(cartCountElement.dataset.count) : 0;
+        updateCartCount(count);
+    });
+     // Кнопка уменьшения количества
+    document.querySelectorAll('.decrease-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            if (quantity > 1) {
+                quantityInput.value = quantity - 1;
+            }
+        });
+    });
+
+    // Кнопка увеличения количества
+    document.querySelectorAll('.increase-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            quantityInput.value = quantity + 1;
+        });
+    });
+</script>
+{% endblock %}

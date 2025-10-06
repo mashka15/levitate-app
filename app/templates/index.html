@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% block title %}LVTT — Главная{% endblock %}
+
+{% block content %}
+
+<!-- Герой-слайдер -->
+<section class="hero-slider container" id="hero" data-autoplay="2000">
+  <div class="hero-track">
+    <!-- Слайд 1 -->
+    <article class="hero-slide">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>Cosmetics for the whole body.<br><strong>For every body.</strong></h1>
+          <p class="hero-sub">Интеллектуальный уход LVTT для кожи и энергии каждый день.</p>
+          <a href="{{ url_for('main.products') }}" class="btn-primary">Смотреть все продукты</a>
+        </div>
+        <div class="hero-visual">
+          <img src="{{ url_for('static', filename='images/ChatGPT Image 25 сент. 2025 г., 09_22_49.png') }}"
+               alt="LVTT — естественная красота" class="hero-photo">
+          <div class="product-cards-container">
+            <!-- Блок первого продукта -->
+            <aside class="product-card" id="slim-beauty-complex">
+              <div class="chips">
+                <span class="chip">Биотин</span>
+                <span class="chip">Гиалурон</span>
+                <span class="chip">Коллаген</span>
+              </div>
+              <div class="sale-badge">−15%</div>
+              <h3 class="product-title">Levitate slim beauty complex</h3>
+              <div class="product-media">
+                <img src="{{ url_for('static', filename='images/DSC_0110.jpg') }}" alt="Levitate slim beauty complex">
+              </div>
+              <a href="{{ url_for('main.product_detail', product_id=13) }}" class="btn-ghost">Подробнее</a>
+            </aside>
+            <!-- Блок второго продукта -->
+            <aside class="product-card" id="coenzyme-q10">
+              <div class="chips">
+                <span class="chip">Микрокристаллическая целлюлоза</span>
+                <span class="chip">Коэнзим Q10</span>
+
+              </div>
+              <div class="sale-badge">−15%</div>
+              <h3 class="product-title">Coenzyme Q10</h3>
+              <div class="product-media">
+                <img src="{{ url_for('static', filename='images/ChatGPT Image 25 сент. 2025 г., 11_27_17.png') }}" alt="Coenzyme Q10">
+              </div>
+              <a href="{{ url_for('main.product_detail', product_id=17) }}" class="btn-ghost">Подробнее</a>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Слайд 2 -->
+    <article class="hero-slide hero-slide--alt">
+      <div class="hero-bg"></div>
+
+      <div class="hero-grid hero-grid--alt">
+        <div class="hero-visual">
+          <img src="{{ url_for('static', filename='images/DSC07785кроп.jpg') }}"
+               alt="LVTT — естественное сияние" class="hero-photo hero-photo--frame">
+          <div class="badge badge--sale">−10%</div>
+
+        </div>
+
+        <div class="hero-copy">
+          <h1><span class="thin">Daily balance.</span><br><strong>Natural glow.</strong></h1>
+          <p class="hero-sub">Формулы LVTT поддерживают тонус и восстановление каждый день.</p>
+
+          <div class="cta-row">
+          <a href="{{ url_for('main.products') }}" class="btn-primary">К линейке</a>
+          <a href="{{ url_for('main.product_detail', product_id=13) }}" class="btn-ghost">Состав</a>
+        </div>
+
+        <div class="glass-spec">
+          <div class="spec"><span>Уровень увлажненности</span><strong>73%</strong></div>
+          <div class="spec"><span>Антиоксиданты</span><strong>Витамин C • Е</strong></div>
+          <div class="spec"><span>Объём</span><strong>50 мл</strong></div>
+          <div class="spec"><span>Рекомендуется для</span><strong>Чувствительная кожа</strong></div>
+        </div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <button class="hero-arrow prev" aria-label="Предыдущий слайд">‹</button>
+  <button class="hero-arrow next" aria-label="Следующий слайд">›</button>
+
+  <div class="hero-dots" aria-label="Индикаторы слайдов"></div>
+</section>
+
+
+<div class="divider"></div>
+
+<!-- Галерея -->
+<div class="gallery">
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/ChatGPT Image 26 сент. 2025 г., 23_41_52.png') }}"
+         alt="Продукт 1" class="gallery-img"
+         data-hover="{{ url_for('static', filename='images/ChatGPT Image 24 сент. 2025 г., 19_11_04.png') }}">
+  </div>
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/ChatGPT Image 26 сент. 2025 г., 23_30_32.png') }}"
+         alt="Продукт 2" class="gallery-img"
+         data-hover="{{ url_for('static', filename='images/hover-image-2.jpg') }}">
+  </div>
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/ChatGPT Image 26 сент. 2025 г., 23_49_58.png') }}"
+         alt="Продукт 3" class="gallery-img"
+         data-hover="{{ url_for('static', filename='images/hover-image-3.jpg') }}">
+  </div>
+</div>
+
+
+<!-- Кнопки CTA -->
+
+
+<!-- Дополнительный текст -->
+<div class="additional-text">
+    <p>Откройте для себя силу инноваций в каждом нашем продукте. В LVTT мы создаем решения, которые идеально вписываются в вашу повседневную жизнь, предоставляя долгосрочные результаты и укрепляя ваше общее состояние здоровья.</p>
+    <div class="cta">
+        <a href="#" class="cta-button">GoldApple</a> <!-- Без ссылки пока -->
+        <a href="https://www.wildberries.ru/seller/912478" class="cta-button" target="_blank">Wildberies</a>
+        <a href="https://www.ozon.ru/seller/levitate-537546/?miniapp=seller_537546" class="cta-button" target="_blank">Ozon</a>
+</div>
+    <p>Присоединяйтесь к сообществу LVTT и ощутите все преимущества передовых технологий. Пусть LVTT станет вашим проводником к здоровому и полноценному образу жизни.</p>
+</div>
+
+
+
+<!-- Раздел ценностей -->
+<div class="values-section">
+    <h2>Наши ценности</h2>
+    <div class="values-block">
+        <div class="value-item">
+            <img src="{{ url_for('static', filename='images/ChatGPT Image 27 сент. 2025 г., 00_20_17.png') }}" alt="Логотип LVTT" class="value-item">
+            <h3>Подходит всем</h3>
+            <p>Мы называем наши средства «умными», так как они подходят для любого типа кожи, для разных возрастов и под различные запросы организма, индивидуально решая проблему.</p>
+        </div>
+        <div class="value-item">
+            <h3>Уникальная формула</h3>
+            <p>Высококлассные технологии создали уникальную формулу средств Levitate, где каждый компонент сочетается между собой и дает нужный эффект.</p>
+            <img src="{{ url_for('static', filename='images/ChatGPT Image 27 сент. 2025 г., 00_53_44.png') }}" alt="Логотип LVTT" class="value-item">
+        </div>
+        <div class="value-item">
+            <img src="{{ url_for('static', filename='images/ChatGPT Image 27 сент. 2025 г., 00_39_54.png') }}" alt="Логотип LVTT" class="value-item">
+            <h3>Чистый состав</h3>
+            <p>Многоступенчатая проверка сырья, благодаря чему состав абсолютно не имеет вредных примесей. Вся наша продукция разрабатывается в профессиональных фармацевтических и косметологических лабораториях.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Таймлайн -->
+<div class="timeline">
+    <div class="event">
+        <div class="year">2000 год</div>
+        <div class="description">История Анастасии начинается с работы с триггерными породами на инфляционных сетях. Она основывалась на поисках и зависимостях от...</div>
+    </div>
+    <div class="event">
+        <div class="year">2004 год</div>
+        <div class="description">Анастасия активно включилась в поддержку антикризисных социальных программ...</div>
+    </div>
+    <div class="event">
+        <div class="year">2009 год</div>
+        <div class="description">Анастасия создала проект, направленный на улучшение качества жизни, с акцентом на психоэмоциональное состояние...</div>
+    </div>
+    <div class="event">
+        <div class="year">2015 год</div>
+        <div class="description">В сотрудничестве с профессиональными специалистами Анастасия провела клинические исследования на основе личной практики...</div>
+    </div>
+    <div class="event">
+        <div class="year">2019 год</div>
+        <div class="description">Анастасия с командой разработала и провела исследования по продуктивности лечения Levitate...</div>
+    </div>
+    <div class="event">
+        <div class="year">2020 год</div>
+        <div class="description">Создала Академию AID и запустила группу, обучая специалистов в области психотерапевтической поддержки...</div>
+    </div>
+    <div class="event">
+        <div class="year">2022 год</div>
+        <div class="description">В сотрудничестве с профессиональными сообществами Анастасия активно развивает методы для улучшения психоэмоционального состояния...</div>
+    </div>
+    <div class="event">
+        <div class="year">2023 год</div>
+        <div class="description">Рассчитаны новые методики лечения и выпущен Мусс Levitate, который продолжает восстанавливать психологическое здоровье...</div>
+    </div>
+    <div class="event">
+        <div class="year">2024 год</div>
+        <div class="description">Мы продолжаем развивать и исследовать новые возможности для улучшения психоэмоционального состояния с помощью инновационных решений...</div>
+    </div>
+</div>
+
+<script>
+    // Функция для обновления счетчика корзины в хедере
+    function updateCartCount(count) {
+        const cartCountElement = document.querySelector('.cart-count');
+        if (cartCountElement) {
+            // Явно преобразуем count в число, если это возможно
+            let numericCount = Number(count);
+            if (isNaN(numericCount) || numericCount < 0) {
+                numericCount = 0;
+            }
+            cartCountElement.textContent = numericCount;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartCountElement = document.querySelector('.cart-count');
+
+        let count = 0;
+        if (cartCountElement && cartCountElement.dataset.count !== undefined) {
+            count = parseInt(cartCountElement.dataset.count);
+        }
+        updateCartCount(count);
+    });
+
+    // Кнопки уменьшения/увеличения количества товара
+    document.querySelectorAll('.decrease-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            if (quantity > 1) {
+                quantityInput.value = quantity - 1;
+            }
+        });
+    });
+
+    document.querySelectorAll('.increase-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.closest('.quantity-selector').querySelector('.quantity-input');
+            let quantity = parseInt(quantityInput.value);
+            quantityInput.value = quantity + 1;
+        });
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const slider = document.querySelector('.hero-slider');
+  if (!slider) return;
+
+  const track = slider.querySelector('.hero-track');
+  const slides = Array.from(slider.querySelectorAll('.hero-slide'));
+  const prevBtn = slider.querySelector('.hero-arrow.prev');
+  const nextBtn = slider.querySelector('.hero-arrow.next');
+  const dotsWrap = slider.querySelector('.hero-dots');
+
+  let index = 0;
+  const AUTOPLAY_MS = 6000;
+
+  // Генерация индикаторов слайдов
+  dotsWrap.innerHTML = '';
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.classList.add('hero-dot');
+    dot.setAttribute('aria-label', `Слайд ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+
+  // Обновление слайдера
+  function update() {
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dotsWrap.querySelectorAll('.hero-dot').forEach((dot, i) => {
+      dot.setAttribute('aria-selected', String(i === index));
+    });
+  }
+
+  // Переход на слайд
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    update();
+  }
+
+  // Переключение на следующий слайд
+  function next() {
+    goTo(index + 1);
+  }
+
+  // Переключение на предыдущий слайд
+  function prev() {
+    goTo(index - 1);
+  }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  let timer;
+  function startAutoplay() {
+    if (AUTOPLAY_MS > 0 && !timer) {
+      timer = setInterval(next, AUTOPLAY_MS);
+    }
+  }
+
+  function stopAutoplay() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  slider.addEventListener('mouseenter', stopAutoplay);
+  slider.addEventListener('mouseleave', startAutoplay);
+
+  update();
+  startAutoplay();
+});
+</script>
+
+{% endblock %}

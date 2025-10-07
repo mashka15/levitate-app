@@ -37,7 +37,7 @@ def create_app(environ=None, start_response=None):
 
     return app
 
-# Для запуска через Waitress
+
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True)

@@ -12,7 +12,7 @@ def create_app(environ=None, start_response=None):
     # Конфигурация приложения для подключения к Postgres
     app.config['SECRET_KEY'] = '9148ea4ea6b1abf7811b49ea49fdb08d'
     app.config['SQLALCHEMY_DATABASE_URI'] = (
-        'postgresql+psycopg2://mashakarpova1511:marukarp123@localhost:5432/levitate'
+        'postgresql+psycopg2://amvera-karpova-masha1-cnpg-levitate-phm-rw/levitate'
     )
     print("DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

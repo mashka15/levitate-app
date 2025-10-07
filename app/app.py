@@ -6,7 +6,7 @@ from flask_session import Session
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app():
+def create_app(environ=None, start_response=None):
     app = Flask(__name__)
 
     # Конфигурация приложения для подключения к Postgres
@@ -37,7 +37,7 @@ def create_app():
 
     return app
 
-
+# Для запуска через Waitress
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)  # Запуск сервера в режиме отладки
+    app.run(debug=True)

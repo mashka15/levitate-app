@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, MetaData, Table
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 sqlite_engine = create_engine('sqlite:///C:/Users/karpo/PycharmProjects/reference/instance/site.db')
 sqlite_metadata = MetaData()
@@ -9,7 +9,7 @@ pg_engine = create_engine('postgresql+psycopg2://mashakarpova1511:marukarp123@lo
 pg_metadata = MetaData()
 pg_metadata.reflect(bind=pg_engine)
 
-SQLiteSession = sessionmaker(bind=sqlite_engine)
+SQLiteSession: sessionmaker[Session] = sessionmaker(bind=sqlite_engine)
 sqlite_session = SQLiteSession()
 
 PGSession = sessionmaker(bind=pg_engine)

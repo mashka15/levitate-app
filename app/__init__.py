@@ -13,7 +13,7 @@ def create_app():
 
     # Строка подключения к базе данных PostgreSQL
     app.config['SQLALCHEMY_DATABASE_URI'] = (
-        'postgresql+psycopg2://amvera-karpova-masha1-cnpg-levitate-phm-rw:marukarp123@hostname:5432/levitate'
+        'postgresql+psycopg2://amvera-karpova-masha1-cnpg-levitate-rw:marukarp123@hostname:5432/levitate'
     )
 
     # Отключение слежения за изменениями для экономии ресурсов

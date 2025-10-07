@@ -12,9 +12,7 @@ def create_app():
     app.config['SECRET_KEY'] = '9148ea4ea6b1abf7811b49ea49fdb08d'
 
     # Строка подключения к базе данных PostgreSQL
-    app.config['SQLALCHEMY_DATABASE_URI'] = (
-        'postgresql+psycopg2://amvera-karpova-masha1-cnpg-levitate-rw:marukarp123@hostname:5432/levitate'
-    )
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://mashakarpova1511:marukarp123@localhost:5432/levitate'
 
     # Отключение слежения за изменениями для экономии ресурсов
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -24,7 +22,7 @@ def create_app():
     migrate.init_app(app, db)
 
     # Регистрируем основные маршруты из блюпринта
-    from .routes import main
+    from app.routes import main
     app.register_blueprint(main)
 
     return app

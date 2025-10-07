@@ -29,7 +29,6 @@ def create_app():
 
     # Импорт моделей для создания таблиц
     with app.app_context():
-
         db.create_all()  # Создает таблицы (если их еще нет)
 
     # Импорт и регистрация blueprint'ов
@@ -41,4 +40,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)
+    app.run(debug=True)  # Запуск сервера в режиме отладки
